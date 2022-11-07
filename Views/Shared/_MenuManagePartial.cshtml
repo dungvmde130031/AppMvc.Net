@@ -10,13 +10,21 @@
     Manage
   </button>
   <div class="dropdown-menu" aria-labelledby="manageDropdownMenu">
-    <a 
+    <a
       class="dropdown-item"
       asp-action="Index"
       asp-controller="DbManage"
       asp-area="Database"
     >
       Database
+    </a>
+    <a
+      class="dropdown-item"
+      asp-action="Index"
+      asp-controller="Contact"
+      asp-area="Contact"
+    >
+      Contact Management
     </a>
   </div>
 </div>
