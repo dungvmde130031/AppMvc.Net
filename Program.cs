@@ -1,8 +1,16 @@
 using App.Services;
+using App.Models;
+using App.ExtendMethods;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AppMvcConnectionString"));
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
@@ -23,6 +31,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+// From ExtendMethods
+app.AddStatusCodePage(); // Error message response: 500 - 599
 
 app.UseRouting();
 
@@ -54,6 +64,11 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
     endpoints.MapRazorPages();
+
+    // sayhi
+    endpoints.MapGet("/sayhi", async (context) => {
+        await context.Response.WriteAsync($"Hello ASP.NET MVC { DateTime.Now }");
+    });
 });
 
 app.Run();
