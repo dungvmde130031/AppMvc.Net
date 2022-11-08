@@ -1,0 +1,54 @@
+@model IEnumerable<App.Models.Todos.Todo>
+
+@{
+    ViewData["Title"] = "Todo list management";
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<p>
+    <a asp-action="CreateTodo">Create Todo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TodoDescription)
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TodoName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TodoDescription)
+            </td>
+            <td>
+                @if (item.IsFinish)
+                {
+                    <p>Done</p>
+                }
+                @if (!item.IsFinish)
+                {
+                    <p>Not yet</p>
+                }
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

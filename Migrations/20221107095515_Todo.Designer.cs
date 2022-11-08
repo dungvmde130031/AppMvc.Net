@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace mvc.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221107041202_Contact")]
-    partial class Contact
+    [Migration("20221107095515_Todo")]
+    partial class Todo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace mvc.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("App.Models.Contacts.Contact", b =>
+            modelBuilder.Entity("App.Models.Todos.Todo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,31 +32,22 @@ namespace mvc.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DateSent")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("IsFinish")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("TodoDescription")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("TodoName")
                         .IsRequired()
                         .HasMaxLength(36)
                         .HasColumnType("nvarchar(36)");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts");
+                    b.ToTable("Todos");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using App.Models.Contacts;
+using App.Models.Todos;
 
 namespace App.Models
 {
@@ -29,7 +29,6 @@ namespace App.Models
       // }
     }
 
-    public DbSet<Contact> Contacts { get; set; }
-
+    public DbSet<Todo> Todos { get; set; }
   }
 }
