@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.Models;
 using TodoModel = App.Models.Todos.Todo;
+using App.Services.Todos;
 
 namespace App.Areas.Todo.Controllers
 {
@@ -15,18 +16,23 @@ namespace App.Areas.Todo.Controllers
     {
         private readonly AppDbContext _context;
 
-        public TodoController(AppDbContext context)
+        private readonly TodoService _todoService;
+
+        public TodoController(
+            AppDbContext context,
+            TodoService todoService)
         {
             _context = context;
+            _todoService = todoService;
         }
 
         // GET: Todo/Todo
         [HttpGet("/admin/todo")]
         public async Task<IActionResult> Index()
         {
-              return _context.Todos != null ? 
-                          View(await _context.Todos.ToListAsync()) :
-                          Problem("Entity set 'AppDbContext.Todos'  is null.");
+            return _context.Todos != null ? 
+                View(await _context.Todos.ToListAsync()) :
+                Problem("Entity set 'AppDbContext.Todos'  is null.");
         }
 
         // GET: Todo/Todo/Details/5
@@ -42,7 +48,7 @@ namespace App.Areas.Todo.Controllers
             var todo = await _context.Todos
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            // ViewData["GetStatus"] = todo.IsFinish;
+            
             if (todo == null)
             {
                 return NotFound();
@@ -58,6 +64,9 @@ namespace App.Areas.Todo.Controllers
             return View();
         }
 
+        [TempData]
+        public string? StatusMessage { get; set; }
+
         // POST: Todo/Todo/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -70,6 +79,8 @@ namespace App.Areas.Todo.Controllers
                 todo.IsFinish = false;
                 _context.Add(todo);
                 await _context.SaveChangesAsync();
+                StatusMessage = "Added Successfully!";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(todo);
@@ -110,6 +121,7 @@ namespace App.Areas.Todo.Controllers
                 {
                     _context.Update(todo);
                     await _context.SaveChangesAsync();
+                    StatusMessage = "Updated Successfully!";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -162,6 +174,8 @@ namespace App.Areas.Todo.Controllers
             }
             
             await _context.SaveChangesAsync();
+            StatusMessage = "Deleted Successfully!";
+
             return RedirectToAction(nameof(Index));
         }
 

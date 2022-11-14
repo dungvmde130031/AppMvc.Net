@@ -1,4 +1,5 @@
 using App.Services;
+using App.Services.Todos;
 using App.Models;
 using App.ExtendMethods;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,9 @@ builder.Services.AddRazorPages();
 // builder.Services.AddSingleton<ProductService>();
 // builder.Services.AddSingleton<ProductService, ProductService>();
 // builder.Services.AddSingleton(typeof(ProductService));
-builder.Services.AddSingleton(typeof(ProductService), typeof(ProductService));
+// builder.Services.AddSingleton(typeof(ProductService), typeof(ProductService));
+
+builder.Services.AddScoped(typeof(TodoService), typeof(TodoService));
 
 var app = builder.Build();
 
